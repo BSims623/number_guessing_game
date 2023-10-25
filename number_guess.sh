@@ -69,7 +69,17 @@ fi
 }
 
 INSERT_DATA() {
-  echo good job
+  ((COUNT = COUNT + 1))
+  echo "$GET_USERNAME" | while IFS="|" read USERNAME GAMES_PLAYED BEST_GAME
+  do
+  ((GAMES_PLAYED = GAMES_PLAYED + 1))
+  if [[ -z $BEST_GAME || $COUNT -lt $BEST_GAME ]]
+  then 
+  BEST_GAME="$COUNT"
+  fi
+  INSERT_GAME_RESULTS=$($PSQL "UPDATE usernames SET games_played = $GAMES_PLAYED, best_game = $BEST_GAME WHERE username='$USERNAME'")
+  done
+  echo -e "\nYou guessed it in $COUNT tries. The secret number was $SECRET_NUMBER. Nice job!\n"
 }
 
 MAIN_MENU
