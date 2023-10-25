@@ -46,7 +46,31 @@ FILTER_GUESS "$GUESS"
 }
 
 FILTER_GUESS() {
-    echo "$1"
+if [[ ! $GUESS =~ ^[0-9]+$ ]]
+then
+  echo -e "\nThat is not an integer, guess again:" 
+  read GUESS 
+  FILTER_GUESS "$GUESS"
+fi  
+if [[ $GUESS -lt $SECRET_NUMBER ]]
+then
+  ((COUNT = COUNT + 1))
+  echo -e "\nIt's higher than that, guess again:"
+  read GUESS
+  FILTER_GUESS "$GUESS"
+fi  
+if [[ $GUESS -gt $SECRET_NUMBER ]]
+then
+  ((COUNT = COUNT + 1))
+  echo -e "\nIt's lower than that, guess again:"
+  read GUESS
+  FILTER_GUESS "$GUESS"
+fi
+}
+
+INSERT_DATA() {
+  echo good job
 }
 
 MAIN_MENU
+INSERT_DATA
